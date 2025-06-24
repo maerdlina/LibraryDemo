@@ -1,5 +1,6 @@
 package ru.company.library.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.company.library.entyties.Book;
@@ -15,6 +16,12 @@ public class BookService {
     }
 
     public Book findBookByName(String name){
-        return bookRepo.findBookByName(name);
+        return bookRepo.findBookByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Книга с названием " + name + " не найден")
+                );
+    }
+    public Book findBookByNameContainingIgnoreCase(String name){
+        return bookRepo.findBookByNameContainingIgnoreCase(name)
+            .orElseThrow(() -> new EntityNotFoundException("Автор с названием " + name + " не найдена"));
     }
 }
