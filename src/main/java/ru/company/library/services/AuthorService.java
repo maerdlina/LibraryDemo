@@ -1,5 +1,6 @@
 package ru.company.library.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.company.library.entyties.Author;
@@ -15,6 +16,7 @@ public class AuthorService {
     }
 
     public Author findAuthorByFio(String fio){
-        return authorRepo.findAuthorByFio(fio);
+        return authorRepo.findAuthorByFio(fio)
+                .orElseThrow(() -> new EntityNotFoundException("Автор с ФИО " + fio + " не найден"));
     }
 }
