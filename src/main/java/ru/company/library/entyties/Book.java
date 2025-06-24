@@ -19,6 +19,8 @@ public class Book {
     private String name;
 
     @OneToOne
+            // (fetch = FetchType.LAZY)
+//    @MapsId
     private Author author;
 
     private String genre;
