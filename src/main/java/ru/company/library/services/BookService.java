@@ -17,4 +17,5 @@ public class BookService {
     public Book findBookByName(String name){
         return bookRepo.findBookByName(name);
     }
+    public Book findBookByNameContainingIgnoreCase(String name){return bookRepo.findBookByNameContainingIgnoreCase(name);}
 }

@@ -2,7 +2,6 @@ package ru.company.library.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.company.library.entyties.Book;
 import ru.company.library.services.BookService;
@@ -19,7 +18,12 @@ public class BookController {
     }
 
     @GetMapping("/getByName")
-    public ResponseEntity<Book> getBookByFio(@RequestParam String name){
+    public ResponseEntity<Book> getBookByName(@RequestParam String name){
         return ResponseEntity.ok(bookService.findBookByName(name));
+    }
+
+    @GetMapping("/getBySubName")
+    public ResponseEntity<Book> getBookBySubName(@RequestParam String name){
+        return ResponseEntity.ok(bookService.findBookByNameContainingIgnoreCase(name));
     }
 }

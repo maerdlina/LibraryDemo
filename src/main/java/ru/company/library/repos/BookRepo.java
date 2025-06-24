@@ -12,4 +12,5 @@ public interface BookRepo extends JpaRepository<Book, Long> {
      * @return возвращает найденного автора
      */
     Book findBookByName(String name);
+    Book findBookByNameContainingIgnoreCase(String name);
 }
