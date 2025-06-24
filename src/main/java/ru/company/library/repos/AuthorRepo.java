@@ -9,7 +9,7 @@ public interface AuthorRepo extends JpaRepository<Author, Long> {
     /**
      * Метод ищет автора по ФИО
      * @param fio Фамилия Имя Отчество
-     * @return возвращает найденного автора
+     * @return возвращает автора
      */
     Author findAuthorByFio(String fio);
 }
