@@ -2,6 +2,7 @@ package ru.company.library.controllers;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.company.library.entyties.Author;
@@ -10,6 +11,7 @@ import ru.company.library.helper.ControllerUtils;
 import ru.company.library.services.BookService;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -46,6 +48,31 @@ public class BookController {
                 bookService.findBookByNameContainingIgnoreCase(name),
                 "Книга не найдена"
         );
+    }
+
+    @PutMapping("/updateById")
+    public ResponseEntity<?> updateBookById(
+            @RequestParam("id") Long id,
+            @RequestParam("name") String name,
+            @RequestParam("authorId") Long authorId,
+            @RequestParam("genre") String genre,
+            @RequestParam("circulation") String circulation,
+            @RequestParam("price") double price,
+            @RequestParam("releaseYear") @DateTimeFormat(pattern = "yyyy-MM-dd") Date releaseYear
+    ) {
+        try {
+            Book book = bookService.updateBookById(
+                    id, name, authorId, genre, circulation, price, releaseYear
+            );
+            return ResponseEntity.ok(book);
+        } catch (EntityNotFoundException ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status", "success");
+            response.put("message", "Ошибка обновления");
+            response.put("details", ex.getMessage());
+            response.put("timestamp", Instant.now());
+            return ResponseEntity.ok(response);
+        }
     }
 
     @DeleteMapping("/deleteById")

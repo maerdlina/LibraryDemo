@@ -10,6 +10,7 @@ spring:
   jpa:
     database: postgresql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+  # update
     show-sql: true
   #   database-platform: orj.hibernate.
