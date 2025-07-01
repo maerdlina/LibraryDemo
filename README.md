@@ -1,2 +1,2 @@
 # LibraryDemo
-JDK 21, Gradle, PostgreSQL, JPA
+JDK 21, Gradle, PostgreSQL
