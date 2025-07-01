@@ -18,8 +18,8 @@ public class Book {
     @Column(name = "название")
     private String name;
 
-    @OneToOne
-    private Author author;
+//    @OneToOne
+//    private Author author;
 
     private String genre;
 
