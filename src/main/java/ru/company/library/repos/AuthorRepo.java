@@ -3,6 +3,7 @@ package ru.company.library.repos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.company.library.entyties.Author;
+import ru.company.library.entyties.Book;
 
 import java.util.Optional;
 
@@ -14,4 +15,5 @@ public interface AuthorRepo extends JpaRepository<Author, Long> {
      * @return возвращает автора
      */
     Optional<Author> findAuthorByFio(String fio);
+    Optional<Author> findAuthorByFioContainingIgnoreCase(String fio);
 }

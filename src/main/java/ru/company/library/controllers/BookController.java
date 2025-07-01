@@ -26,26 +26,10 @@ public class BookController {
         return ResponseEntity.ok(bookService.saveBook(book));
     }
 
-//    @GetMapping("/getByName")
-//    public ResponseEntity<?> getBookByName(@RequestParam String name){
-////        return ResponseEntity.ok(bookService.findBookByName(name));
-//        try {
-//            Book book = bookService.findBookByName(name);
-//            return ResponseEntity.ok(book);
-//        } catch (EntityNotFoundException ex) {
-//            Map<String, Object> response = new LinkedHashMap<>();
-//            response.put("status", "success");
-//            response.put("message", "Книга не найдена");
-//            response.put("details", ex.getMessage());
-//            response.put("timestamp", Instant.now());
-//            return ResponseEntity.ok(response);
-//        }
-//    }
-
-    @GetMapping("/getBySubName")
-    public ResponseEntity<?> getBookBySubName(@RequestParam String name){
+    @GetMapping("/getBySubTitle")
+    public ResponseEntity<?> getBookBySubTitle(@RequestParam String title){
         return ControllerUtils.handleEntityOperation(() ->
-                bookService.findBookByNameContainingIgnoreCase(name),
+                bookService.findBookByTitleContainingIgnoreCase(title),
                 "Книга не найдена"
         );
     }
@@ -53,26 +37,19 @@ public class BookController {
     @PutMapping("/updateById")
     public ResponseEntity<?> updateBookById(
             @RequestParam("id") Long id,
-            @RequestParam("name") String name,
+            @RequestParam("title") String title,
             @RequestParam("authorId") Long authorId,
             @RequestParam("genre") String genre,
             @RequestParam("circulation") String circulation,
             @RequestParam("price") double price,
             @RequestParam("releaseYear") @DateTimeFormat(pattern = "yyyy-MM-dd") Date releaseYear
     ) {
-        try {
-            Book book = bookService.updateBookById(
-                    id, name, authorId, genre, circulation, price, releaseYear
-            );
-            return ResponseEntity.ok(book);
-        } catch (EntityNotFoundException ex) {
-            Map<String, Object> response = new LinkedHashMap<>();
-            response.put("status", "success");
-            response.put("message", "Ошибка обновления");
-            response.put("details", ex.getMessage());
-            response.put("timestamp", Instant.now());
-            return ResponseEntity.ok(response);
-        }
+        return ControllerUtils.handleEntityOperation(() ->
+                        bookService.updateBookById(
+                                id, title, authorId, genre, circulation, price, releaseYear
+                        ),
+                "Книга не найдена"
+        );
     }
 
     @DeleteMapping("/deleteById")

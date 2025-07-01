@@ -21,20 +21,14 @@ public class BookService {
         return bookRepo.save(author);
     }
 
-//    public Book findBookByName(String name){
-//        return bookRepo.findBookByName(name)
-//                .orElseThrow(() -> new EntityNotFoundException("Книга с названием " + name + " не найден")
-//                );
-//    }оченб
-
-    public Book findBookByNameContainingIgnoreCase(String name){
-        return bookRepo.findBookByNameContainingIgnoreCase(name)
-            .orElseThrow(() -> new EntityNotFoundException("Книга с названием " + name + " не найдена"));
+    public Book findBookByTitleContainingIgnoreCase(String title){
+        return bookRepo.findBookByTitleContainingIgnoreCase(title)
+            .orElseThrow(() -> new EntityNotFoundException("Книга с названием " + title + " не найдена"));
     }
 
     public Book updateBookById(
             Long id,
-            String name,
+            String title,
             Long authorId,
             String genre,
             String circulation,
@@ -47,7 +41,7 @@ public class BookService {
         Author author = authorRepo.findById(authorId)
                 .orElseThrow(() -> new EntityNotFoundException("Автор с id " + authorId + " не найден"));
 
-        book.setName(name);
+        book.setTitle(title);
 //        book.setAuthor(author);
         book.setGenre(genre);
         book.setCirculation(circulation);
@@ -66,15 +60,5 @@ public class BookService {
         }
         throw new EntityNotFoundException("Книга с ID " + id + " не найдена");
     }
-
-    // Удаление по имени
-//    @Transactional
-//    public String deleteBookByName(String name) {
-//        int deletedCount = bookRepo.deleteByName(name);
-//        if (deletedCount > 0) {
-//            return "Книга '" + name + "' успешно удалена";
-//        }
-//        throw new EntityNotFoundException("Книга с названием '" + name + "' не найдена");
-//    }
 
 }

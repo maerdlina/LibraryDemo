@@ -14,17 +14,17 @@ import java.util.Optional;
 public interface BookRepo extends JpaRepository<Book, Long> {
     /**
      * Метод ищет данные о книге по названию
-     * @param name Название книги
+     * @param title Название книги
      * @return возвращает информацию о найденной книге по названию
      */
-    Optional<Book> findBookByName(String name);
+    Optional<Book> findBookByTitle(String title);
 
     /**
      * Метод ищет данные о книге по полному названию или части
-     * @param name Название книги
+     * @param title Название книги
      * @return возвращает информацию о найденной книге
      */
-    Optional<Book> findBookByNameContainingIgnoreCase(String name);
+    Optional<Book> findBookByTitleContainingIgnoreCase(String title);
 
 //    @Transactional
 //    @Modifying

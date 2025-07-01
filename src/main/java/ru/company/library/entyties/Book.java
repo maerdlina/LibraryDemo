@@ -16,10 +16,7 @@ public class Book {
     private Long id;
 
     @Column(name = "название")
-    private String name;
-
-//    @OneToOne
-//    private Author author;
+    private String title;
 
     private String genre;
 

@@ -20,8 +20,8 @@ public class AuthorService {
         return authorRepo.save(author);
     } //CREATE
 
-    public Author findAuthorByFio(String fio){ //READ
-        return authorRepo.findAuthorByFio(fio)
+    public Author findAuthorByFioContainingIgnoreCase(String fio){ //READ
+        return authorRepo.findAuthorByFioContainingIgnoreCase(fio)
                 .orElseThrow(() -> new EntityNotFoundException("Автор с ФИО " + fio + " не найден"));
     }
 
