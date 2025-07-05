@@ -16,12 +16,7 @@ public class Book {
     private Long id;
 
     @Column(name = "название")
-    private String name;
-
-    @OneToOne
-            // (fetch = FetchType.LAZY)
-//    @MapsId
-    private Author author;
+    private String title;
 
     private String genre;
 
