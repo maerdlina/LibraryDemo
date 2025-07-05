@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.company.library.entyties.Author;
+import ru.company.library.entyties.Book;
 import ru.company.library.repos.AuthorRepo;
+import ru.company.library.repos.BookRepo;
 
 import java.util.Date;
 
@@ -14,6 +16,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AuthorService {
     private final AuthorRepo authorRepo;
+    private final BookRepo bookRepo;
     //CRUD
 
     public Author saveAuthor(Author author){
@@ -40,11 +43,16 @@ public class AuthorService {
 
     @Transactional
     public String deleteAuthorById(Long id){
-        if (authorRepo.existsById(id)) {
-            authorRepo.deleteById(id);
-            return "Автор с ID " + id + " успешно удален";
+        Author author = authorRepo.findAuthorById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Автор с " + id + " не найден"));
+
+        for(Book book: author.getBooks()){
+            book.getAuthors().remove(author);
+            bookRepo.save(book);
         }
-        throw new EntityNotFoundException("Автор с ID " + id + " не найден");
+
+        authorRepo.delete(author);
+        return "Автор с ID " + id + "успешно удален!";
     }
 
 }

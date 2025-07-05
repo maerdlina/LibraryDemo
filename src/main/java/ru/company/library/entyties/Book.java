@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,7 +33,6 @@ public class Book {
     @Column(name = "releaseYear")
     private Date releaseYear;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id") // Столбец для внешнего ключа в таблице Books
-    private Author author;
+    @ManyToMany(mappedBy = "books", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Author> authors = new HashSet<>();
 }
