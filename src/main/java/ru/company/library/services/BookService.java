@@ -42,7 +42,7 @@ public class BookService {
                 .orElseThrow(() -> new EntityNotFoundException("Автор с id " + authorId + " не найден"));
 
         book.setTitle(title);
-//        book.setAuthor(author);
+        book.setAuthor(author);
         book.setGenre(genre);
         book.setCirculation(circulation);
         book.setPrice(price);

@@ -15,5 +15,6 @@ public interface AuthorRepo extends JpaRepository<Author, Long> {
      * @return возвращает автора
      */
     Optional<Author> findAuthorByFio(String fio);
+    Optional<Author> findAuthorById(Long id);
     Optional<Author> findAuthorByFioContainingIgnoreCase(String fio);
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.company.library.entyties.Author;
 import ru.company.library.entyties.Book;
 import ru.company.library.helper.ControllerUtils;
+import ru.company.library.services.AuthorService;
 import ru.company.library.services.BookService;
 
 import java.time.Instant;
@@ -20,9 +21,11 @@ import java.util.Map;
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
-
+    private final AuthorService authorService;
     @PostMapping
-    public ResponseEntity<Book> saveBook(@RequestBody Book book){
+    public ResponseEntity<Book> saveBook(@RequestBody Book book, @RequestParam Long authorId){
+        Author author = authorService.findAuthorById(authorId);
+        book.setAuthor(author); // Устанавливаем автора для книги
         return ResponseEntity.ok(bookService.saveBook(book));
     }
 
