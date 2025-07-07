@@ -20,6 +20,14 @@ public class BookService {
     private final BookRepo bookRepo;
     private final AuthorRepo authorRepo;
 
+    /**
+     * Сохраняет новую книгу в базе данных и связывает ее с указанными авторами.
+     *
+     * @param book Объект книги для сохранения
+     * @param authorsId Список идентификаторов авторов книги
+     * @return Сохраненный объект книги
+     * @throws EntityNotFoundException Если хотя бы один автор не найден
+     */
     public Book saveBook(Book book, List<Long> authorsId){
         Set<Author> authors = new HashSet<>();
         for(Long authorId: authorsId){
@@ -32,11 +40,31 @@ public class BookService {
         return bookRepo.save(book);
     }
 
+    /**
+     * Находит книги по частичному совпадению названия (без учета регистра).
+     *
+     * @param title Часть названия для поиска
+     * @return Найденный объект книги
+     * @throws EntityNotFoundException Если книга с указанным названием не найдена
+     */
     public Book findBookByTitleContainingIgnoreCase(String title){
         return bookRepo.findBookByTitleContainingIgnoreCase(title)
             .orElseThrow(() -> new EntityNotFoundException("Книга с названием " + title + " не найдена"));
     }
 
+    /**
+     * Обновляет данные книги по ее идентификатору и связывает с новыми авторами.
+     *
+     * @param id Идентификатор книги для обновления
+     * @param title Новое название книги
+     * @param authorsId Список новых идентификаторов авторов
+     * @param genre Новый жанр
+     * @param circulation Новый тираж
+     * @param price Новая цена
+     * @param releaseYear Новый год выпуска
+     * @return Обновленный объект книги
+     * @throws EntityNotFoundException Если книга или хотя бы один автор не найдены
+     */
     public Book updateBookById(
             Long id,
             String title,
@@ -67,7 +95,13 @@ public class BookService {
         return bookRepo.save(book);
     }
 
-
+    /**
+     * Удаляет книгу по ее идентификатору.
+     *
+     * @param id Идентификатор книги для удаления
+     * @return Сообщение об успешном удалении
+     * @throws EntityNotFoundException Если книга с указанным ID не найдена
+     */
     @Transactional
     public String deleteBookById(Long id) {
         if (bookRepo.existsById(id)) {

@@ -3,7 +3,6 @@ package ru.company.library.repos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.company.library.entyties.Author;
-import ru.company.library.entyties.Book;
 
 import java.util.Optional;
 
