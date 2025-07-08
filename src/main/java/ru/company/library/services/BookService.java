@@ -70,11 +70,16 @@ public class BookService {
 
     @Transactional
     public String deleteBookById(Long id) {
-        if (bookRepo.existsById(id)) {
-            bookRepo.deleteById(id);
-            return "Книга с ID " + id + " успешно удалена";
+        Book book = bookRepo.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Книга с " + id + " не найдена"));
+
+        for(Author author: book.getAuthors()){
+            author.getBooks().remove(book);
+            authorRepo.save(author);
         }
-        throw new EntityNotFoundException("Книга с ID " + id + " не найдена");
+
+        bookRepo.delete(book);
+        return "Книга с ID " + id + "успешно удалена!";
     }
 
 }
