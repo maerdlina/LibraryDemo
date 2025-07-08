@@ -10,6 +10,9 @@ import ru.company.library.repos.AuthorRepo;
 import ru.company.library.repos.BookRepo;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +20,16 @@ public class BookService {
     private final BookRepo bookRepo;
     private final AuthorRepo authorRepo;
 
-    public Book saveBook(Book author){
-        return bookRepo.save(author);
+    public Book saveBook(Book book, List<Long> authorsId){
+        Set<Author> authors = new HashSet<>();
+        for(Long authorId: authorsId){
+            Author author = authorRepo.findAuthorById(authorId)
+                    .orElseThrow(() -> new EntityNotFoundException("Автор с " + authorId + " не найден"));
+            authors.add(author);
+            author.getBooks().add(book);
+        }
+        book.setAuthors(authors);
+        return bookRepo.save(book);
     }
 
     public Book findBookByTitleContainingIgnoreCase(String title){
@@ -29,7 +40,7 @@ public class BookService {
     public Book updateBookById(
             Long id,
             String title,
-            Long authorId,
+            List<Long> authorsId,
             String genre,
             String circulation,
             double price,
@@ -38,11 +49,16 @@ public class BookService {
         Book book = bookRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Книга с id " + id + " не найдена"));
 
-        Author author = authorRepo.findById(authorId)
-                .orElseThrow(() -> new EntityNotFoundException("Автор с id " + authorId + " не найден"));
+        Set<Author> authors = new HashSet<>();
+        for(Long authorId: authorsId){
+            Author author = authorRepo.findAuthorById(authorId)
+                    .orElseThrow(() -> new EntityNotFoundException("Автор с " + authorId + " не найден"));
+            authors.add(author);
+            author.getBooks().add(book);
+        }
 
         book.setTitle(title);
-//        book.setAuthor(author);
+        book.setAuthors(authors);
         book.setGenre(genre);
         book.setCirculation(circulation);
         book.setPrice(price);
@@ -54,11 +70,16 @@ public class BookService {
 
     @Transactional
     public String deleteBookById(Long id) {
-        if (bookRepo.existsById(id)) {
-            bookRepo.deleteById(id);
-            return "Книга с ID " + id + " успешно удалена";
+        Book book = bookRepo.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Книга с " + id + " не найдена"));
+
+        for(Author author: book.getAuthors()){
+            author.getBooks().remove(book);
+            authorRepo.save(author);
         }
-        throw new EntityNotFoundException("Книга с ID " + id + " не найдена");
+
+        bookRepo.delete(book);
+        return "Книга с ID " + id + "успешно удалена!";
     }
 
 }
