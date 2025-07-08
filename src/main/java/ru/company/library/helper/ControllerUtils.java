@@ -9,6 +9,12 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class ControllerUtils {
+    /**
+     *
+     * @param action Лямбда-выражение, содержащее операцию для выполнени
+     * @param errorMessage Строка содержащая информациб об ошибке
+     * @return Сообщение об ошибке
+     */
     public static ResponseEntity<?> handleEntityOperation(
             Supplier<?> action,
             String errorMessage

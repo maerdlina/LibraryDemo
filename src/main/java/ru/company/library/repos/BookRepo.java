@@ -22,8 +22,4 @@ public interface BookRepo extends JpaRepository<Book, Long> {
      */
     Optional<Book> findBookByTitleContainingIgnoreCase(String title);
 
-//    @Transactional
-//    @Modifying
-//    @Query("DELETE FROM Book b WHERE b.name = :name")
-//    int deleteByName(@Param("name") String name);
 }
